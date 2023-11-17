@@ -2,7 +2,7 @@
   "name": "vite-rtk-query",
   "version": "0.4.0",
   "license": "MIT",
-  "homepage": "https://jgwitkowski.github.io/ccr-ui",
+  "homepage": "https://jgwitkowski.github.io/ccr-ui/",
   "msw": {
     "workerDirectory": "public"
   },
