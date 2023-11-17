@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client'
 
 import './index.css'
 import App from './App'
-import { BrowserRouter } from 'react-router-dom'
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 
@@ -16,7 +15,7 @@ if (process.env.NODE_ENV === 'development') {
     // Launched mock server, and then start client React app
     .then(() =>
       root.render(
-        <BrowserRouter>
+        <>
           <nav className="bg-white border-gray-200 dark:bg-gray-900 border-b-2">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
               <a
@@ -35,7 +34,7 @@ if (process.env.NODE_ENV === 'development') {
             </div>
           </nav>
           <App />
-        </BrowserRouter>,
+        </>,
       ),
     )
 } else {
