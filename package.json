@@ -15,7 +15,7 @@
     "preview": "vite preview",
     "start": "vite",
     "dev": "vite",
-    "build": "vite build --base=./ccr-ui/",
+    "build": "vite build --base=./",
     "serve": "serve dist",
     "test": "vitest --run",
     "test:watch": "vitest",
