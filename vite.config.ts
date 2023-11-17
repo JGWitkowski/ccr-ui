@@ -27,7 +27,7 @@ export default defineConfig({
   //   sourcemap: true,
   // },
   plugins: [react()],
-  base: '/ccr-ui',
+  base: '/ccr-ui/',
   // server: {
   //   host: true,
   //   port: 3000,
