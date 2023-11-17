@@ -2,6 +2,7 @@
   "name": "vite-rtk-query",
   "version": "0.4.0",
   "license": "MIT",
+  "homepage": "https://JGWitkowski.github.io/ccr-ui",
   "msw": {
     "workerDirectory": "public"
   },
@@ -10,6 +11,7 @@
   },
   "scripts": {
     "start": "vite",
+    "deploy": "gh-pages -d build",
     "dev": "vite",
     "build": "vite build",
     "serve": "serve dist",
