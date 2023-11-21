@@ -7,7 +7,7 @@ import { getToken } from '../utils/auth'
 // Define a service using a base URL and expected endpoints
 export const docsApi = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://137.184.18.94//api',
+    baseUrl: 'http://137.184.18.94/api',
     credentials: 'same-origin',
     fetchFn: async (...args) => ky(...args),
   }),
