@@ -1,11 +1,12 @@
 import { Box } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { setHoverId } from '../Map/mapSlice'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const ClamListItem = (props) => {
   const { clam, i, hoverId } = props
   const dispatch = useDispatch()
+  const [showMore, setShowMore] = useState(false)
   // const targetElementRef = useRef(null)
   // const handleScrollToElement = () => {
   //   // Scroll to the target element
@@ -37,10 +38,10 @@ const ClamListItem = (props) => {
         key={i}
         className={`${
           hoverId === clam._id ? 'bg-blue-100' : ''
-        } pb-10 pt-5 max-w-3xl p-3 w-full bg-gray-50 hover:bg-white border-b-2 hover:border-black-900  hover:shadow dark:bg-gray-800 dark:border-gray-700`}
+        }  pt-5 max-w-3xl p-3 w-full bg-gray-50 hover:bg-white border-b-2 hover:border-black-900  hover:shadow dark:bg-gray-800 dark:border-gray-700`}
       >
-        <div className="mb-4 border-b-2 border-gray-100 pb-3 relative">
-          <h5 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white max-w-[80%]">
+        <div className="border-b-2 border-gray-100 pb-3 relative">
+          <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white max-w-[80%] mb-1">
             {clam.name}
           </h5>
           <div className="absolute top-0 right-0 text-sm text-gray-500">
@@ -51,60 +52,76 @@ const ClamListItem = (props) => {
               {JSON.parse(clam.address).description}
             </p>
           )}
-          <div className="flex items-center">
-            <svg
-              className="w-4 h-4 text-yellow-300 me-1"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 22 20"
-            >
-              <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-            </svg>
-            <p className="ms-2 text-sm font-bold text-gray-900 dark:text-white">
-              {clam.totalScore && clam.totalScore.toFixed(1)}
-            </p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <svg
+                className="w-4 h-4 text-yellow-300 me-1"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 22 20"
+              >
+                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+              </svg>
+              <p className="ms-2 text-sm font-bold text-gray-900 dark:text-white">
+                {clam.totalScore && clam.totalScore.toFixed(1)}
+              </p>
+            </div>
+            <div>
+              <span
+                onClick={() => {
+                  setShowMore(!showMore)
+                }}
+                className="text-blue-600"
+              >
+                {showMore ? 'Hide Details' : 'View Details'}
+              </span>
+            </div>
           </div>
         </div>
-        {clam.tasteScore && (
-          <div className="flex flex-row">
-            <div className="flex flex-col text-sm">
-              <div className="mr-12 mb-1">
-                <span className="pr-1">Taste:</span>
-                <span className="font-bold">{clam.tasteScore}</span>
+        {showMore && (
+          <>
+            {clam.tasteScore && (
+              <div className="flex flex-row pt-4">
+                <div className="flex flex-col text-sm">
+                  <div className="mr-12 mb-1">
+                    <span className="pr-1">Taste:</span>
+                    <span className="font-bold">{clam.tasteScore}</span>
+                  </div>
+                  <div>
+                    <span className="pr-1">Volume:</span>{' '}
+                    <span className="font-bold">{clam.volumeScore}</span>
+                  </div>
+                </div>
+                <div className="flex flex-col text-sm">
+                  <div className="mr-12 mb-1">
+                    <span className="pr-1">Consistency:</span>
+                    <span className="font-bold">{clam.consistencyScore}</span>
+                  </div>
+                  <div>
+                    <span className="pr-1">Price:</span>{' '}
+                    <span className="font-bold">{clam.priceScore}</span>
+                  </div>
+                </div>
               </div>
+            )}
+            {!clam.tasteScore && (
+              <div className="flex flex-row">
+                <div className="flex flex-col text-sm">
+                  <div className="mr-12 mb-1">
+                    <span className="pr-1">Detailed score not available</span>
+                  </div>
+                </div>
+              </div>
+            )}
+            <div className="mt-4 max-w-md pb-8">
+              <p className="text-xs mb-1">Comments:</p>
               <div>
-                <span className="pr-1">Volume:</span>{' '}
-                <span className="font-bold">{clam.volumeScore}</span>
+                <p className="text-xs">{clam.notes}</p>
               </div>
             </div>
-            <div className="flex flex-col text-sm">
-              <div className="mr-12 mb-1">
-                <span className="pr-1">Consistency:</span>
-                <span className="font-bold">{clam.consistencyScore}</span>
-              </div>
-              <div>
-                <span className="pr-1">Price:</span>{' '}
-                <span className="font-bold">{clam.priceScore}</span>
-              </div>
-            </div>
-          </div>
+          </>
         )}
-        {!clam.tasteScore && (
-          <div className="flex flex-row">
-            <div className="flex flex-col text-sm">
-              <div className="mr-12 mb-1">
-                <span className="pr-1">Detailed score not available</span>
-              </div>
-            </div>
-          </div>
-        )}
-        <div className="mt-4 max-w-md">
-          <p className="text-xs mb-1">Comments:</p>
-          <div>
-            <p className="text-xs">{clam.notes}</p>
-          </div>
-        </div>
       </div>
     </>
   )
