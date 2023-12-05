@@ -26,5 +26,12 @@ if (process.env.NODE_ENV === 'development') {
     )
 } else {
   // Production
-  root.render(<App />)
+  root.render(
+    <>
+      <NavBar />
+      <main className="pt-20">
+        <App />
+      </main>
+    </>,
+  )
 }
