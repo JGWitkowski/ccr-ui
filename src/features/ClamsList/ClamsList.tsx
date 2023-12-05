@@ -1,12 +1,18 @@
 import { Box } from '@mui/material'
-import { useDispatch } from 'react-redux'
-import { setHoverId } from '../Map/mapSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectHoverId, setHoverId } from '../Map/mapSlice'
 import { useEffect, useRef, useState } from 'react'
 
 const ClamListItem = (props) => {
-  const { clam, i, hoverId } = props
+  const { clam, i } = props
   const dispatch = useDispatch()
-  const [showMore, setShowMore] = useState(false)
+  const hoverId = useSelector(selectHoverId)
+  const [showMore, setShowMore] = useState(
+    window.innerWidth > 600 ? true : false,
+  )
+  useEffect(() => {
+    console.log('changedfsdhoverId', hoverId === clam._id)
+  }, [hoverId])
   // const targetElementRef = useRef(null)
   // const handleScrollToElement = () => {
   //   // Scroll to the target element
@@ -36,9 +42,9 @@ const ClamListItem = (props) => {
         }}
         id={clam._id.toString()}
         key={i}
-        className={`${
-          hoverId === clam._id ? 'bg-blue-100' : ''
-        }  pt-5 max-w-3xl p-3 w-full bg-gray-50 hover:bg-white border-b-2 hover:border-black-900  hover:shadow dark:bg-gray-800 dark:border-gray-700`}
+        className={`pt-5 max-w-3xl p-3 w-full  border-b-2 hover:border-black-900  hover:shadow dark:bg-gray-800 dark:border-gray-700  ${
+          hoverId === clam._id ? 'bg-blue-100' : 'bg-white'
+        }`}
       >
         <div
           className={`${
@@ -72,14 +78,16 @@ const ClamListItem = (props) => {
               </p>
             </div>
             <div>
-              <span
-                onClick={() => {
-                  setShowMore(!showMore)
-                }}
-                className="text-blue-600"
-              >
-                {showMore ? 'Hide Details' : 'View Details'}
-              </span>
+              {window.innerWidth <= 600 && (
+                <span
+                  onClick={() => {
+                    setShowMore(!showMore)
+                  }}
+                  className="text-blue-600"
+                >
+                  {showMore ? 'Hide Details' : 'View Details'}
+                </span>
+              )}
             </div>
           </div>
         </div>

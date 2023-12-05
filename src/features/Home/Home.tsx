@@ -51,8 +51,8 @@ const Home = () => {
     }
   }
   return (
-    <div className="overflow-hidden">
-      <div className="fixed z-10 w-full min-h-full">
+    <div className="overflow-hidden sm:flex">
+      <div className="fixed sm:relative z-10 sm:w-8/12 w-full min-h-full">
         {data && (
           <GoogleMap
             hoverHandlerCallback={hoverHandlerCallback}
@@ -85,7 +85,7 @@ const Home = () => {
       <CustomTabPanel value={value} index={1}></CustomTabPanel> */}
       {/* <ParentComponent /> */}
       {/* <h1 className="text-3xl text-left mb-6">Recent reviews</h1> */}
-      <div className=" overflow-y-scroll z-10 top-80 fixed md:w-4/12 w-full left-0 sm:top-20 bottom-0 sm:overflow-x-hidden">
+      <div className=" overflow-y-scroll z-10 top-72 fixed sm:w-4/12 w-full left-0 bottom-0 sm:overflow-x-hidden sm:top-20 sm:left-auto sm:right-0">
         {!isLoading && (
           <ClamsList hoverId={currentWindow && currentWindow.id} data={data} />
         )}
