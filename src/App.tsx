@@ -5,6 +5,9 @@ import { store } from './store'
 import Home from './features/Home/Home'
 import ClamsList from './features/ClamsList'
 import Clams from './features/Clams'
+import { PrivateOutlet } from './utils/PrivateOutlet'
+import Login from './features/Login'
+import Reviews from './features/Reviews'
 
 const App: React.FC = () => {
   return (
@@ -12,8 +15,17 @@ const App: React.FC = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/clams-submit" element={<Clams />} />
-          <Route path="/clams" element={<ClamsList />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/clams-submit"
+            // element={
+            //   <PrivateOutlet>
+            //     <Clams />
+            //   </PrivateOutlet>
+            // }
+            element={<Clams />}
+          />
+          <Route path="/clams" element={<Reviews />} />
         </Routes>
       </BrowserRouter>
     </ReduxStoreProvider>

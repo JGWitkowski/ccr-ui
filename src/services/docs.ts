@@ -3,11 +3,12 @@ import ky from 'ky'
 
 import type { DocsList } from './types'
 import { getToken } from '../utils/auth'
+import { build } from 'vite'
 
 // Define a service using a base URL and expected endpoints
 export const docsApi = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://137.184.18.94/api',
+    baseUrl: import.meta.env.VITE_API_URL || 'http://137.184.18.94/api',
     credentials: 'same-origin',
     fetchFn: async (...args) => ky(...args),
   }),
@@ -38,6 +39,9 @@ export const docsApi = createApi({
     getClamsList: builder.query<DocsList, void>({
       query: () => `/clams-list`,
     }),
+    getRestaurantLongLat: builder.query<any, any>({
+      query: (place_id) => `/get-long-lat?placeid=${place_id}`,
+    }),
   }),
   reducerPath: 'docsApi',
 })
@@ -45,8 +49,9 @@ export const docsApi = createApi({
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
 export const {
-  useGetDocsListQuery,
+  useLazyGetRestaurantLongLatQuery,
   useLoginMutation,
   useSaveClamMutation,
   useGetClamsListQuery,
+  useGetRestaurantLongLatQuery,
 } = docsApi

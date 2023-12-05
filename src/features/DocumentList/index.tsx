@@ -11,13 +11,13 @@ const DocumentList: React.FC = () => {
 
   if (error)
     return (
-      <main className={styles.container}>
+      <div className={styles.container}>
         <p className={styles.error}>{JSON.stringify(error)}</p>
-      </main>
+      </div>
     )
 
   return (
-    <main className={styles.container}>
+    <div className={styles.container}>
       <Link to="/" className={styles.link}>
         &gt; Counter
       </Link>
@@ -33,7 +33,7 @@ const DocumentList: React.FC = () => {
             </a>
           ))}
       </section>
-    </main>
+    </div>
   )
 }
 
