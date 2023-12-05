@@ -6,9 +6,9 @@ export const NavBar = () => {
   return (
     <nav className="z-10 w-full fixed bg-white border-gray-200 dark:bg-gray-900 border-b-2">
       {/* <ListHover /> */}
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-3">
         <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-blue-400">
+          <span className=" font-serif self-center text-3xl tracking-wide font-semibold whitespace-nowrap dark:text-blue-400">
             Clam Chowder Inn
           </span>
         </a>

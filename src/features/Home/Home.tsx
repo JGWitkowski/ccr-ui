@@ -85,7 +85,7 @@ const Home = () => {
       <CustomTabPanel value={value} index={1}></CustomTabPanel> */}
       {/* <ParentComponent /> */}
       {/* <h1 className="text-3xl text-left mb-6">Recent reviews</h1> */}
-      <div className=" overflow-y-scroll z-10 top-96 fixed md:w-4/12 w-full left-0 sm:top-20 bottom-0 sm:overflow-x-hidden">
+      <div className=" overflow-y-scroll z-10 top-80 fixed md:w-4/12 w-full left-0 sm:top-20 bottom-0 sm:overflow-x-hidden">
         {!isLoading && (
           <ClamsList hoverId={currentWindow && currentWindow.id} data={data} />
         )}

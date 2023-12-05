@@ -40,7 +40,11 @@ const ClamListItem = (props) => {
           hoverId === clam._id ? 'bg-blue-100' : ''
         }  pt-5 max-w-3xl p-3 w-full bg-gray-50 hover:bg-white border-b-2 hover:border-black-900  hover:shadow dark:bg-gray-800 dark:border-gray-700`}
       >
-        <div className="border-b-2 border-gray-100 pb-3 relative">
+        <div
+          className={`${
+            showMore ? 'border-b-2' : ''
+          } border-gray-100 pb-3 relative`}
+        >
           <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white max-w-[80%] mb-1">
             {clam.name}
           </h5>

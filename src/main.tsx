@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === 'development') {
       root.render(
         <>
           <NavBar />
-          <main className="pt-20">
+          <main className="pt-16">
             <App />
           </main>
         </>,
@@ -29,7 +29,7 @@ if (process.env.NODE_ENV === 'development') {
   root.render(
     <>
       <NavBar />
-      <main className="pt-20">
+      <main className="pt-16">
         <App />
       </main>
     </>,

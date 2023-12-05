@@ -7,6 +7,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
+        serif: ['Bebas Neue', ...defaultTheme.fontFamily.serif],
       },
     },
   },

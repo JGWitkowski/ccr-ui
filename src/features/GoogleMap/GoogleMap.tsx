@@ -5,12 +5,28 @@ import {
   InfoBoxProps,
 } from '@react-google-maps/api'
 import React, { memo, useCallback, useEffect, useState } from 'react'
+import markerIcon from '../../clam-chowder-vectorportal.png'
 import { useSelector, shallowEqual } from 'react-redux'
 import { selectHoverId } from '../Map/mapSlice'
 
 export const MapMemo = memo((props) => {
   console.log('changedddfjklsdjfklsdjfkljdskl')
-  const { containerStyle, onLoad } = props
+  const { onLoad } = props
+  const containerStyle = {
+    width: '100%',
+    height: 'calc(100vh - 360px)',
+    styles: [
+      {
+        featureType: 'all',
+        elementType: 'all',
+        stylers: [
+          { saturation: -100 }, // Adjust the saturation for a retro look
+          { lightness: 30 }, // Adjust the lightness for a retro look
+        ],
+      },
+    ],
+    // height: '100%',
+  }
   return (
     <GoogleMap
       mapContainerStyle={containerStyle}
@@ -49,11 +65,6 @@ export const Map = memo((props) => {
     // Call the function passed down from the parent to update its state
     updateParentState('New Parent State')
   }
-  const containerStyle = {
-    width: '100%',
-    height: 'calc(100vh - 360px)',
-    // height: '100%',
-  }
   //   const center = {
   //     lat: -3.745,
   //     lng: -38.523,
@@ -75,6 +86,10 @@ export const Map = memo((props) => {
       const infoWindow = new google.maps.InfoWindow({
         content: clam.comments,
       })
+      const customMarkerIcon = {
+        url: markerIcon, // Replace with the path to your custom marker icon
+        scaledSize: new window.google.maps.Size(30, 30), // Adjust the size of the marker icon
+      }
       const pin = new window.google.maps.Marker({
         position: new window.google.maps.LatLng(
           //   Number(clam.lat) + Number(Number('0.00') + Math.random()),
@@ -85,6 +100,7 @@ export const Map = memo((props) => {
         map: map,
         zIndex: 1,
         optimized: false,
+        icon: customMarkerIcon,
       })
       pin.set('id', clam._id)
       window.google.maps.event.addListener(pin, 'mouseover', () => {
@@ -108,6 +124,7 @@ export const Map = memo((props) => {
     <>
       {isLoaded ? (
         <>
+          {/* <img src={markerIcon} /> */}
           {/* <GoogleMap
             mapContainerStyle={containerStyle}
             center={center}
@@ -118,7 +135,6 @@ export const Map = memo((props) => {
             <></>
           </GoogleMap> */}
           <MapMemo
-            containerStyle={containerStyle}
             // center={center}
             onLoad={onLoad}
           />
