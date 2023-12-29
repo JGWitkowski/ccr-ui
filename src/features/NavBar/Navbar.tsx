@@ -30,12 +30,13 @@ export const NavBar = () => {
           {localStorage.getItem('refreshToken') && (
             <>
               <Link url="/clams-submit">
-                <img className="pr-1" src={AddIcon} />
-                Add Review
+                <img className="pr-1" src={AddIcon} /> Review
               </Link>
               <Link url="/profile">
                 <img src={ProfileIcon} className="pr-1" />
-                {localStorage.getItem('username')}
+                <span className="block max-w-[100px] truncate ...">
+                  {localStorage.getItem('username')}
+                </span>
               </Link>
             </>
           )}
