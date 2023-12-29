@@ -13,7 +13,7 @@ import { SCORE_VALIDATION_RULE } from './AddClam.constants'
 import CustomTabPanel from '../../compoments/Tab'
 import { setToken } from '../Auth/authSlice'
 import { RootState } from '../../store'
-import { LatLong } from '../../utils/types'
+import { ClamRequest, LatLong } from '../../utils/types'
 
 export const AddClam = () => {
   const dispatch = useDispatch()
@@ -96,7 +96,7 @@ export const AddClam = () => {
         setTimeout(() => {
           console.log('slice 3: ', res.accessToken)
         }, 2000)
-        const body = {
+        const body: any = {
           payload: {
             ...data,
             ...longlatResults.currentData,

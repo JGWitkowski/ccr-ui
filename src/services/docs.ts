@@ -4,7 +4,7 @@ import ky from 'ky'
 import type { DocsList } from './types'
 import { getToken } from '../utils/auth'
 import { build } from 'vite'
-import { LatLong } from '../utils/types'
+import { Clam, ClamRequest, LatLong } from '../utils/types'
 
 // Define a service using a base URL and expected endpoints
 export const docsApi = createApi({
@@ -13,6 +13,7 @@ export const docsApi = createApi({
     credentials: 'same-origin',
     // fetchFn: async (...args) => ky(...args),
   }),
+  tagTypes: ['Clam'],
   endpoints: (builder) => ({
     getDocsList: builder.query<DocsList, void>({
       query: () => `/docs_list`,
@@ -24,25 +25,20 @@ export const docsApi = createApi({
         body,
       }),
     }),
-    saveClam: builder.mutation<any, any>({
+    saveClam: builder.mutation<any, ClamRequest>({
       query: (body) => ({
         url: '/save-clam',
         method: 'POST',
         body: body.payload,
-        // prepareHeaders: (headers) => {
-        //   headers.set('Accept', 'application/json')
-        //   headers.set('Content-Type', 'application/json')
-        //   headers.set('Authorization', body.token)
-        //   console.log('bodytodksfodkf: ', `Bearer ${body.token}`)
-        //   return headers
-        // },
         headers: {
           Authorization: `${body.token}`,
         },
       }),
+      invalidatesTags: ['Clam'],
     }),
     getClamsList: builder.query<DocsList, void>({
       query: () => `/clams-list`,
+      providesTags: ['Clam'],
     }),
     getRestaurantLongLat: builder.query<LatLong, any>({
       query: (place_id) => `/get-long-lat?placeid=${place_id}`,
