@@ -12,8 +12,10 @@ import { useSignUpMutation } from '../../services/docs'
 import { useState } from 'react'
 import { setToken } from '../../utils/auth'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 const CreateAccount = (props) => {
+  const navigate = useNavigate()
   const token = useSelector((state) => state.auth.token)
   console.log('cmon token: ', token)
   const [accountSaved, setAccountSaved] = useState(false)
@@ -51,7 +53,11 @@ const CreateAccount = (props) => {
       console.log('got saveed account: ', savedAccount)
       //   setClamSaved(true)
       setAccountSaved(true)
+      setTimeout(() => {
+        navigate('/login')
+      }, 2000)
       dispatch(setCredentials(savedAccount))
+      localStorage.setItem('refreshToken', savedAccount.refreshToken)
       // setToken(savedAccount.token)
     } catch (err) {
       console.log('err', err)
@@ -137,14 +143,8 @@ const CreateAccount = (props) => {
         <Box className="max-w-2xl flex flex-col m-auto items-center p-4">
           <Box className="w-full">
             <h1 className="text-2xl self-start mb-9 mt-6">
-              Thank you for joining! You are now logged in
+              Thank you for joining! You are being redirected to sign in...
             </h1>
-            <a
-              href="/"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 mb-4"
-            >
-              Home
-            </a>
             <br />
           </Box>
         </Box>
