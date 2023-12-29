@@ -1,10 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-
+import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App'
 import NavBar from './features/NavBar/Navbar'
-
+import { Provider as ReduxStoreProvider } from 'react-redux'
+import { store } from './store'
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 
 if (process.env.NODE_ENV === 'development') {
@@ -17,10 +18,14 @@ if (process.env.NODE_ENV === 'development') {
     .then(() =>
       root.render(
         <>
-          <NavBar />
-          <main className="pt-16">
-            <App />
-          </main>
+          <ReduxStoreProvider store={store}>
+            <BrowserRouter>
+              <NavBar />
+              <main className="pt-16">
+                <App />
+              </main>
+            </BrowserRouter>
+          </ReduxStoreProvider>
         </>,
       ),
     )
@@ -28,10 +33,14 @@ if (process.env.NODE_ENV === 'development') {
   // Production
   root.render(
     <>
-      <NavBar />
-      <main className="pt-16">
-        <App />
-      </main>
+      <ReduxStoreProvider store={store}>
+        <BrowserRouter>
+          <NavBar />
+          <main className="pt-16">
+            <App />
+          </main>
+        </BrowserRouter>
+      </ReduxStoreProvider>
     </>,
   )
 }

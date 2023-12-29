@@ -1,22 +1,35 @@
 import { Box, Button, InputLabel, Tab, Tabs, TextField } from '@mui/material'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete'
 import {
   useLazyGetRestaurantLongLatQuery,
+  useRefreshTokenQueryMutation,
   useSaveClamMutation,
 } from '../../services/docs'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import ErrorMessage from '../../compoments/ErrorMessage'
-import { SCORE_VALIDATION_RULE } from './clams.constants'
+import { SCORE_VALIDATION_RULE } from './AddClam.constants'
 import CustomTabPanel from '../../compoments/Tab'
-export const Clams = () => {
+import { setToken } from '../Auth/authSlice'
+import { RootState } from '../../store'
+import { LatLong } from '../../utils/types'
+
+export const AddClam = () => {
+  const dispatch = useDispatch()
+  const token = useSelector((state: RootState) => state.auth.token)
+
   const [getRestaurantLongLat, longlatResults] =
     useLazyGetRestaurantLongLatQuery()
+
+  const [refreshTokenQueryMutation] = useRefreshTokenQueryMutation()
+
   const [value, setTabValue] = useState(0)
+
   useEffect(() => {
     setLatLng({ lat: longlatResults.lat, long: longlatResults.lng })
   }, [longlatResults])
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue)
   }
@@ -28,20 +41,23 @@ export const Clams = () => {
     watch,
     getValues,
   } = useForm()
+
   const [saveClam, { isLoading }] = useSaveClamMutation()
   const [totalScore, setTotalScore] = useState(0)
   const consistencyScore = watch('consistencyScore')
   const volumeScore = watch('volumeScore')
   const tasteScore = watch('tasteScore')
   const priceScore = watch('priceScore')
+
   useEffect(() => {
     const score = calculateScore()
     setTotalScore(score)
-    console.log('rhjfkldsjfhklsdf')
   }, [consistencyScore, volumeScore, tasteScore, priceScore])
+
   const [address, setAddress] = useState('')
   const [clamSaved, setClamSaved] = useState(false)
-  const [latLng, setLatLng] = useState(null)
+  const [latLng, setLatLng] = useState<LatLong | null>(null)
+
   const calculateScore = () => {
     const total =
       (Number(getValues('consistencyScore')) +
@@ -51,34 +67,11 @@ export const Clams = () => {
       4
     return total
   }
-  const onAddressChange = useCallback((address) => {
-    console.log('addres obj: ', address)
-    //onChange({ target: { name: 'address', value: address.value } })
-    // setFormState((prev) => ({
-    //   ...prev,
-    //   [event.target.name]: event.target.value,
-    // }))
+  const onAddressChange = useCallback((address: any) => {
     setValue('address', address)
     getRestaurantLongLat(address.value.place_id)
   }, [])
-  const onChange = useCallback((event) => {
-    setFormState((prev) => ({
-      ...prev,
-      [event.target.name]: event.target.value,
-    }))
-  }, [])
-  // const submitClam = async () => {
 
-  //   try {
-  //     const savedClam = await saveClam({
-  //       ...formState,
-  //       totalScore: totalScore,
-  //     }).unwrap()
-  //     setClamSaved(true)
-  //   } catch (err) {
-  //     console.log('Errrodsf: ', err)
-  //   }
-  // }
   function a11yProps(index: number) {
     return {
       id: `simple-tab-${index}`,
@@ -86,14 +79,45 @@ export const Clams = () => {
     }
   }
   const submitClam = handleSubmit(async (data) => {
-    console.log('datafafdsd: ', data)
     try {
-      const savedClam = await saveClam({
-        ...data,
-        ...longlatResults.currentData,
-        totalScore: data.overallScore ? data.overallScore : totalScore,
-      }).unwrap()
-      setClamSaved(true)
+      if (!token) {
+        const refreshToken = localStorage.getItem('refreshToken')
+        const res = await refreshTokenQueryMutation({
+          refreshToken: refreshToken,
+        }).unwrap()
+        console.log('res: ', res)
+        dispatch(
+          setToken({
+            token: res.accessToken,
+            refreshToken: res.refreshToken,
+          }),
+        )
+        localStorage.setItem('refreshToken', res.refreshToken)
+        setTimeout(() => {
+          console.log('slice 3: ', res.accessToken)
+        }, 2000)
+        const body = {
+          payload: {
+            ...data,
+            ...longlatResults.currentData,
+            totalScore: data.overallScore ? data.overallScore : totalScore,
+          },
+          token: res.accessToken,
+        }
+        const savedClam = await saveClam(body).unwrap()
+        setClamSaved(true)
+      } else {
+        const body = {
+          payload: {
+            ...data,
+            ...longlatResults.currentData,
+            totalScore: data.overallScore ? data.overallScore : totalScore,
+          },
+          token: token,
+        }
+        const savedClam = await saveClam(body).unwrap()
+        setClamSaved(true)
+      }
     } catch (err) {
       console.log('Errrodsf: ', err)
     }
@@ -103,7 +127,10 @@ export const Clams = () => {
       {!clamSaved && (
         <Box className="max-w-2xl flex flex-col m-auto items-center p-4 mb-12">
           <Box className="w-full">
-            <h1 className="text-2xl self-start mb-3 mt-6 font-bold">Info</h1>
+            <h1 className="text-4xl self-start mb-3 mt-6 font-bold">
+              Add Review
+            </h1>
+            <h2 className="text-2xl self-start mb-3 mt-6 font-bold">Info</h2>
             <Box className="mb-6">
               <InputLabel className="mb-2" htmlFor="name">
                 Restaurant Name
@@ -216,7 +243,6 @@ export const Clams = () => {
                 className="w-40"
                 id="price"
                 type="number"
-                onChange={onChange}
                 {...register('price')}
               />
             </Box>
@@ -226,7 +252,6 @@ export const Clams = () => {
                 className="w-full"
                 id="notes"
                 type="text"
-                onChange={onChange}
                 {...register('notes')}
               />
             </Box>
@@ -280,4 +305,4 @@ export const Clams = () => {
     </>
   )
 }
-export default Clams
+export default AddClam

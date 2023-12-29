@@ -1,4 +1,4 @@
-export const setToken = (token) => {
+export const setToken = async (token) => {
   localStorage.setItem('token', token)
   localStorage.setItem('lastLoginTime', new Date(Date.now()).getTime())
 }

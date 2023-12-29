@@ -2,8 +2,10 @@ import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
 import { combineReducers } from 'redux'
 
-import userReducer from './features/Login/userSlice'
+// import authReducer from './features/Login/userSlice'
 import mapReducer from './features/Map/mapSlice'
+import authReducer from './features/Auth/authSlice'
+import userReducer from './features/Login/userSlice'
 import { docsApi } from './services/docs'
 
 // Setup redux-first-history
@@ -12,7 +14,8 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([docsApi.middleware]),
   reducer: combineReducers({
-    auth: userReducer,
+    auth: authReducer,
+    user: userReducer,
     map: mapReducer,
     [docsApi.reducerPath]: docsApi.reducer,
   }),

@@ -13,6 +13,8 @@ const ClamListItem = (props) => {
   useEffect(() => {
     console.log('changedfsdhoverId', hoverId === clam._id)
   }, [hoverId])
+  const token = useSelector((state) => state.auth.token)
+  console.log('cmon token: ', token)
   // const targetElementRef = useRef(null)
   // const handleScrollToElement = () => {
   //   // Scroll to the target element

@@ -14,4 +14,5 @@ module.exports = {
   },
   settings: {},
   overrides: [],
+  'import/order': ['error', { 'newlines-between': 'ignore' }],
 }
